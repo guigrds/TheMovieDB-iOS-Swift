@@ -25,7 +25,7 @@ class Movie: NSObject, Codable {
     static fileprivate var cachedMovies: [Movie] = []
     
     class func saveCachedMovies(_ movies: [Movie]) {
-        guard let storage = Storage.shared() else {
+        guard let storage = StorageUtils<[Movie]>.shared() else {
             return
         }
         
@@ -36,11 +36,11 @@ class Movie: NSObject, Codable {
         if !cachedMovies.isEmpty {
             return cachedMovies
         }
-        guard let storage = Storage.shared() else {
+        guard let storage = StorageUtils<[Movie]>.shared() else {
             return []
         }
         var movies: [Movie] = []
-        if let _movies = try? storage.object(ofType: [Movie].self, forKey: "movies") {
+        if let _movies = try? storage.object(forKey: "movies") {
             movies = _movies
         }
         return movies

@@ -62,7 +62,7 @@ class MovieCollectionViewCell: BaseCollectionViewCell, CellHeight {
     override func setupViews() {
         super.setupViews()
         
-        contentView.layer.cornerRadius = 3.0
+        contentView.layer.cornerRadius = 15.0
         contentView.layer.borderWidth = 1.0
         contentView.layer.borderColor = UIColor.clear.cgColor
         contentView.layer.masksToBounds = true

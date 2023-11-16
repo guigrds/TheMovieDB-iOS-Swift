@@ -7,26 +7,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        setupStatusBar()
         setupAppearance()
         setupWindow()
         setupObservers()
         return true
     }
     
-    func setupStatusBar() {
-        UIApplication.shared.statusBarView?.backgroundColor = ColorPalette.yellow
-    }
-    
     func setupAppearance() {
-        let navigationBarAppearance = UINavigationBar.appearance()
-        navigationBarAppearance.barTintColor = ColorPalette.yellow
-        navigationBarAppearance.tintColor = ColorPalette.black
-        navigationBarAppearance.isTranslucent = true
-        navigationBarAppearance.shadowImage = UIImage()
-        navigationBarAppearance.backgroundColor = ColorPalette.yellow
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.configureWithOpaqueBackground()
         navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor : ColorPalette.black]
-        navigationBarAppearance.setBackgroundImage(UIImage(), for: .default)
+        navigationBarAppearance.backgroundColor = ColorPalette.yellow
+        UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+        UINavigationBar.appearance().compactAppearance = navigationBarAppearance
+        if #available(iOS 15.0, *) {
+            UINavigationBar.appearance().compactScrollEdgeAppearance = navigationBarAppearance
+        }
+
         
         let tabBarAppearance = UITabBar.appearance()
         tabBarAppearance.barTintColor = ColorPalette.yellow
@@ -70,7 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         cachedMovies.remove(at: index)
                     }
                 }
-                
                 Movie.saveCachedMovies(cachedMovies)
             }
         }

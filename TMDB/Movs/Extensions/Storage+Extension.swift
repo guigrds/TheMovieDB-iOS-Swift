@@ -1,8 +1,8 @@
 import Foundation
 import Cache
 
-extension Storage {
-    class func shared() -> Storage? {
+class StorageUtils<T: Codable> {
+    class func shared() -> Storage<String, T>? {
         guard let directory = try? FileManager.default.url(for: .documentDirectory,
                                                            in: .userDomainMask,
                                                            appropriateFor: nil,
@@ -22,17 +22,13 @@ extension Storage {
             countLimit: 50,
             totalCostLimit: 0
         )
-        
-        let dataTransformer = Transformer<Value>(
-            toData: { value in
-                // Transformar o valor (Data) em Data
-                return value as! Data
-            },
-            fromData: { data in
-                // Transformar Data de volta para o valor original (Data)
-                return data as! Value
-            }
+
+        let storage = try? Storage<String, T>(
+          diskConfig: diskConfig,
+          memoryConfig: memoryConfig,
+          transformer: TransformerFactory.forCodable(ofType: T.self)
         )
-        return try? Storage(diskConfig: diskConfig, memoryConfig: memoryConfig, transformer: dataTransformer)
+
+        return storage
     }
 }
